@@ -1,0 +1,21 @@
+CREATE COMPUTE MODULE CreateStatement_10_04_2021_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN		
+		CREATE FIELD OutputRoot.XMLNS.Data;
+		/*CREATE LASTCHILD OF OutputRoot.XMLNSC.Data TYPE NameValue NAME 'Price' VALUE 92.3;
+		CREATE LASTCHILD OF OutputRoot.XMLNSC.Data TYPE NameValue NAME 'Rate' VALUE 10.3;
+		CREATE FIRSTCHILD OF OutputRoot.XMLNSC.Data TYPE NameValue NAME 'MRP' VALUE 20.3;
+		CREATE NEXTSIBLING OF OutputRoot.XMLNSC.Data.MRP TYPE NameValue NAME 'NextToMRP' VALUE 29.3;
+		CREATE PREVIOUSSIBLING OF OutputRoot.XMLNSC.Data.Rate TYPE NameValue NAME 'PreToRate' VALUE 29.0;*/
+	
+		--SET OutputRoot.XMLNS.Data='';
+		/*SET OutputRoot.XMLNSC.Data.MRP=20.3;
+		SET OutputRoot.XMLNSC.Data.NextToMRP=29.3;
+		SET OutputRoot.XMLNSC.Data.Price=92.3;
+		SET OutputRoot.XMLNSC.Data.Rate=10.3;*/		
+			
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
