@@ -1,0 +1,71 @@
+
+
+CREATE COMPUTE MODULE DatetimeFuncs_23_04_2021_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		set OutputRoot.JSON.Data.CURRENT_TIMESTAMP=CURRENT_TIMESTAMP;
+		set OutputRoot.JSON.Data.CURRENT_DATE=CURRENT_DATE;
+		set OutputRoot.JSON.Data.CURRENT_TIME=CURRENT_TIME;
+		
+		
+		set OutputRoot.JSON.Data.YEAR=EXTRACT(YEAR FROM CURRENT_TIMESTAMP);
+		set OutputRoot.JSON.Data.MONTH=EXTRACT(MONTH FROM CURRENT_TIMESTAMP);
+		set OutputRoot.JSON.Data.DAY=EXTRACT(DAY FROM CURRENT_TIMESTAMP);
+		set OutputRoot.JSON.Data.HOUR=EXTRACT(HOUR FROM CURRENT_TIMESTAMP);
+		set OutputRoot.JSON.Data.MINUTE=EXTRACT(MINUTE FROM CURRENT_TIMESTAMP);
+		set OutputRoot.JSON.Data.SECOND=EXTRACT(SECOND FROM CURRENT_TIMESTAMP);
+		
+		/*DECLARE dt DATE;
+		SET dt =CAST(InputRoot.JSON.Data.date AS DATE);*/
+		--DECLARE days INTEGER;
+		--SET days=(CURRENT_DATE-dt)DAY;
+		
+		DECLARE tm TIME;
+		SET tm =CAST(InputRoot.JSON.Data.time AS TIME FORMAT 'mm.HH.ss');
+		DECLARE hours INTEGER;
+		SET hours=(CURRENT_TIME-tm)HOUR;
+		
+		DECLARE ts TIMESTAMP;		
+		--SET ts =CAST(InputRoot.JSON.Data.timestamp  AS TIMESTAMP);--standard fromat			
+		
+		DECLARE dt DATE;
+		SET dt =CAST(InputRoot.JSON.Data.date AS DATE FORMAT 'dd/MM/yyyy');
+		
+		
+		
+		--SET ts =CAST(InputRoot.JSON.Data.timestamp AS TIMESTAMP FORMAT 'dd-MM-yyyy HH:mm:ss');		
+		--SET ts =CAST(InputRoot.JSON.Data.timestamp AS TIMESTAMP FORMAT 'MM/dd/yyyy HH:mm:ss');
+		/*DECLARE d INTEGER EXTRACT(DAY FROM a);
+		IF d>25 THEN
+			set OutputRoot.JSON.Data.message='Your creditcard bill due date is already over';
+		ELSE
+			set OutputRoot.JSON.Data.message='Your creditcard bill due date not over';
+		END IF;*/
+		
+		set OutputRoot.JSON.Data.MyCURRENT_DATE=CAST(CURRENT_DATE as CHARACTER FORMAT 'dd/MM/yyyy')  ;
+		--https://www.ibm.com/docs/zh/integration-bus/9.0.0?topic=function-formatting-parsing-datetimes-as-strings
+		--conversion of datetime formatting from  "04/25/2021 20:31:31" to  "25.04.2021 20:31:31"
+		--step1:first convet it into standard format
+		DECLARE a TIMESTAMP;
+		SET a =CAST(InputRoot.JSON.Data.timestamp AS TIMESTAMP FORMAT 'MM/dd/yyyy HH:mm:ss');--reading format--converting into stardard format
+		
+		--step2:
+		set OutputRoot.JSON.Data.dateformtting=CAST(a AS CHARACTER FORMAT 'dd.MM.yyyy HH:mm:ss');--writing format
+		
+		
+		/*set OutputRoot.JSON.Data.dateformtting=CAST(a AS CHARACTER FORMAT 'dd.MM.yyyy HH:mm:ss');
+		
+		
+		--cast function
+		--standard datetime format 2021-04-25 20:31:31.788047
+		*/
+		
+		
+		
+		
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
