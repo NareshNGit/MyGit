@@ -1,0 +1,85 @@
+CREATE COMPUTE MODULE DateTimeFuncs
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		set OutputRoot.JSON.Data.currentDate =CURRENT_DATE;
+		set OutputRoot.JSON.Data.currentTime =CURRENT_TIME;
+		set OutputRoot.JSON.Data.currentTimeStamp =CURRENT_TIMESTAMP;
+		
+		set OutputRoot.JSON.Data.currentyear = EXTRACT(YEAR FROM CURRENT_DATE);
+		set OutputRoot.JSON.Data.currentHour = EXTRACT(HOUR FROM CURRENT_TIME);
+		set OutputRoot.JSON.Data.currentMonth = EXTRACT(MONTH FROM CURRENT_TIMESTAMP);
+		
+		set OutputRoot.JSON.Data.add2Days =CURRENT_DATE + INTERVAL '2' DAY;
+		set OutputRoot.JSON.Data.subtract2Days =CURRENT_DATE + INTERVAL '-2' DAY; --In place of DAY you can use MONTH, YEAR
+		
+		set OutputRoot.JSON.Data.add2Hours =CURRENT_TIME + INTERVAL '2' HOUR;
+		set OutputRoot.JSON.Data.subtract2Mins =CURRENT_TIME + INTERVAL '-2' MINUTE;
+		
+		set OutputRoot.JSON.Data.add2years =CURRENT_TIMESTAMP + INTERVAL '2' YEAR; --this line and below line results same		
+		set OutputRoot.JSON.Data.add2yearsUsingCast =CURRENT_TIMESTAMP + CAST(2 AS INTERVAL YEAR);
+		
+		--Input dateOfBirth is in CHARACTER DataType first convert it into DATE dataType using CAST function , Now extract function will extrac year
+		-- "dateOfBirth":"1999-12-01"
+		-- set OutputRoot.JSON.Data.customerDOBYear = EXTRACT(YEAR FROM CAST(InputRoot.JSON.Data.RegistrationFormReq.dateOfBirth AS DATE));
+		
+		
+		-- "dateOfBirth":"01/12/1999"
+		
+		--set OutputRoot.JSON.Data.customerDOBYear = EXTRACT(YEAR FROM CAST(InputRoot.JSON.Data.RegistrationFormReq.dateOfBirth AS DATE FORMAT 'dd/MM/yyyy'));
+		
+		
+		
+		--If date is in standard format yyyy-MM-dd , use below code
+		DECLARE DOB1 CHARACTER;
+		SET DOB1 = '1999-12-09'; --this is in standard format yyyy-MM-dd
+		
+		DECLARE dt1 DATE;
+		set dt1 = CAST(DOB1 AS DATE);--Now this date is in DATE datatype and standard format, 1996-12-01
+		
+		DECLARE yr1 INTEGER;
+		set yr1 =EXTRACT(YEAR FROM dt1);
+		
+		--If date is not in standard format then use below code
+		DECLARE DOB2 CHARACTER;
+		SET DOB2 = '01.12.1996'; --this is not in standard format yyyy-MM-dd
+		
+		DECLARE dt2 DATE;
+		set dt2 = CAST(DOB2 AS DATE FORMAT 'dd.MM.yyyy');--Now this date is in DATE datatype and standard format, 1996-12-01
+		
+		DECLARE yr2 INTEGER;
+		set yr2 =EXTRACT(YEAR FROM dt2);
+		
+		set OutputRoot.JSON.Data.castedDate = dt2;--  01/12/1996
+		set OutputRoot.JSON.Data.castedDate = CAST(dt2 AS CHARACTER FORMAT 'dd/MM/yyyy');
+		--set OutputRoot.JSON.Data.customerDOBYear = EXTRACT(YEAR FROM CAST(InputRoot.JSON.Data.RegistrationFormReq.dateOfBirth AS DATE FORMAT 'dd/MM/yyyy'));
+		
+		
+		DECLARE myDob CHARACTER;
+		set myDob = InputRoot.JSON.Data.RegistrationFormReq.dateOfBirth;--1999/12/09
+		DECLARE myDt DATE;
+		set myDt = CAST(myDob AS DATE FORMAT 'yyyy/MM/dd'); -- 1999-12-09
+		
+		 set OutputRoot.JSON.Data.myConvertedDate = CAST(myDt AS CHARACTER FORMAT 'dd.MMMM.yyyy');--01/12/1996
+		
+		
+		
+		--Character-->Date --reading from Input
+		--Date-->Character  --Sending output
+		DECLARE age INTEGER;
+		set age= (CURRENT_DATE-myDt)MONTH;
+		set OutputRoot.JSON.Data.age = age;
+		
+		DECLARE tm TIME;
+		SET tm =CAST(InputRoot.JSON.Data.RegistrationFormReq.time AS TIME FORMAT 'mm.HH.ss');
+		DECLARE hours INTEGER;
+		SET hours=(CURRENT_TIME-tm)HOUR;
+		
+		
+		
+		
+		
+		RETURN TRUE;
+	END;	
+END MODULE;

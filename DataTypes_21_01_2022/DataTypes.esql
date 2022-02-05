@@ -1,0 +1,98 @@
+CREATE COMPUTE MODULE DataTypes
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		/*1,2,3
+		100.09, 200.00,
+		"hi hello world"
+		2022-01-30
+		10:10:00
+		true, false,unknown*/
+		
+		/*DECLARE i INTEGER;
+		set i =1;		
+		DECLARE m INTEGER;
+		set m =1;
+		DECLARE n INTEGER;
+		set n =2;
+		DECLARE o INTEGER;
+		set o =3;*/
+		
+		
+		/*DECLARE i,m,n,o INTEGER;		
+		set i =1;
+		set m =1;
+		set n =2;
+		set o =3;*/
+		
+		
+		DECLARE i INTEGER 1;
+		DECLARE m INTEGER 1;
+		DECLARE n INTEGER 2;
+		DECLARE o INTEGER 3;
+		
+		
+		
+		
+		
+		DECLARE j INTEGER;
+		set j=2;		
+		DECLARE k INTEGER;
+		set k =i+j;		
+		
+		
+		
+		DECLARE dec1 DECIMAL;
+		set dec1 = CURRENT_DATE;
+		
+		DECLARE dec2 DECIMAL 200.09;
+		
+		DECLARE flo FLOAT 100.90;
+		
+		DECLARE ch1,ch2,ch3 CHARACTER;
+		set ch1 = 'Hello';
+		set ch2 = 'Hello world2';
+		set ch3 = 'Hello world3';
+		
+		DECLARE dt DATE;
+		set dt = DATE '1999-10-20';
+		
+		DECLARE currdate DATE;
+		set currdate = CURRENT_DATE;
+		
+		DECLARE tm TIME;
+		set tm = TIME '10:10:00';
+		
+		DECLARE currtm TIME;
+		set currtm = CURRENT_TIME;
+		
+		DECLARE dttm TIMESTAMP;
+		set dttm = TIMESTAMP '2021-10-22 20:10:00';
+		
+		DECLARE currdttm TIMESTAMP;
+		set currdttm = CURRENT_TIMESTAMP;
+		
+		DECLARE doYouHaveBike BOOLEAN ;
+		set doYouHaveBike =true; --true, false, unknown
+		
+		
+		
+
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

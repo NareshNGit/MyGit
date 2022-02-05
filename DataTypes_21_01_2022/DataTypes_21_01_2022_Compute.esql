@@ -1,0 +1,115 @@
+
+
+CREATE COMPUTE MODULE DataTypes_21_01_2022_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+	/*1,2,3
+	100.00,1000.54
+	"Hi my name is naresh"
+	2022-01-21	
+	true or false*/
+	
+	DECLARE a INTEGER;
+	SET a=1;
+	DECLARE b INTEGER;
+	SET b=2;
+	DECLARE c INTEGER;	
+	SET c =a+b;
+	
+	DECLARE x,y,z INTEGER;
+	SET x=1;
+	SET y=2;
+	SET z=x+y;	
+	
+	DECLARE m INTEGER 1;
+	DECLARE n INTEGER 2;
+	DECLARE o INTEGER m+n;
+	
+	SET OutputRoot.JSON.Data.msg=o;
+	
+	DECLARE dec1 DECIMAL;
+	SET dec1 = 1000.90;	
+	DECLARE dec2,dec3,dec4 DECIMAL;	
+	DECLARE dec5 DECIMAL 1000.89;
+	
+	
+	DECLARE float1 FLOAT;
+	SET float1 = 100.90;	
+	DECLARE float2,float3,float4 FLOAT;	
+	DECLARE float5 FLOAT 1000.89;
+	
+	DECLARE ch CHARACTER;
+	SET ch = 'Hi this is character variable';
+	DECLARE ch1,ch2,ch3 CHARACTER ;	
+	DECLARE ch4 CHARACTER 'this is ch4';
+	
+	/*
+	BOOLEAN 3 values
+	TRUE
+	FALSE
+	UNKONWN
+	*/
+	
+	DECLARE doYouHaveBike BOOLEAN;
+	SET doYouHaveBike=TRUE;	
+	DECLARE customerHasAccount BOOLEAN FALSE;	
+	DECLARE limitAvailable BOOLEAN UNKNOWN;
+	
+	--old date
+	DECLARE dt DATE;
+	SET dt = DATE '1993-02-02';
+	
+	--current date
+	DECLARE currentDt DATE;
+	SET currentDt=CURRENT_DATE;
+	
+	set OutputRoot.JSON.Data.currentdate=currentDt;
+	
+	DECLARE tm TIME;
+	set tm = TIME '10:00:00';
+	
+	DECLARE currtm TIME;
+	SET currtm = CURRENT_TIME;
+	
+	
+	DECLARE ts1 TIMESTAMP;
+	SET ts1 = TIMESTAMP '2022-01-01 10:00:00';
+	
+	DECLARE ts TIMESTAMP;
+	set ts = CURRENT_TIMESTAMP;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+ 
+ 
+
+
+
+
+
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;
